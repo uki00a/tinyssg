@@ -20,7 +20,7 @@ const defaultTemplate = `<html>
     <meta name="twitter:creator" content="@<%= author %>" />
     <% } %>
     <% if (favicon) { %>
-    <link rel="icon" href="https://raw.githubusercontent.com/uki00a/blog/master/src/assets/favicon.ico"></link>
+    <link rel="icon" href="<%= favicon %>"></link>
     <% } %>
   </head>
   <body>
