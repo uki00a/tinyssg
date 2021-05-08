@@ -31,7 +31,7 @@ async function buildConfig(
     ...finalConfig.plugins,
   ];
 
-  if (finalConfig.postFiles && finalConfig.postFiles.length > 1) {
+  if (finalConfig.postFiles && finalConfig.postFiles.length > 0) {
     finalConfig.postFiles = finalConfig.postFiles.map((x) => path.resolve(x));
   }
   return finalConfig;

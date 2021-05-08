@@ -21,9 +21,9 @@ Deno.test("tinyssg build", async () => {
   });
   try {
     const status = await cli.status();
-    const errorOutput = await readAll(cli.stderr);
     const decoder = new TextDecoder();
-    assert(status.success, decoder.decode(errorOutput));
+    const errorOutput = decoder.decode(await readAll(cli.stderr));
+    assert(status.success, errorOutput);
 
     for (
       const { file, body, title } of [
