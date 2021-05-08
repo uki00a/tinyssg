@@ -1,8 +1,16 @@
 import { build, Config } from "./mod.ts";
 import { readConfig } from "./fs.ts";
+import { cac } from "./deps/cli.ts";
 import { path } from "./deps/main.ts";
 
-async function main() {
+const cli = cac("tinyssg");
+
+cli.help();
+cli.command("build [...files]", "Build files").action((files: string[]) =>
+  buildCommand(files)
+);
+
+async function buildCommand(files: string[]): Promise<void> {
   const rootDir = Deno.cwd();
   const config = await readConfig(rootDir);
   const defaultConfig: Config = {
@@ -16,24 +24,13 @@ async function main() {
     ...config,
   };
 
-  const command = Deno.args[0];
-  // FIXME
-  if (Deno.args.length > 1) {
-    finalConfig.postFiles = [path.resolve(Deno.args[1])];
+  if (files.length > 1) {
+    finalConfig.postFiles = files.map((x) => path.resolve(x));
   }
 
-  switch (command) {
-    case "build":
-      await build(finalConfig);
-      break;
-    default:
-      throw new Error("Unknown command: " + command);
-  }
+  await build(finalConfig);
 }
 
 if (import.meta.main) {
-  main().catch((error) => {
-    console.error(error);
-    Deno.exit(1);
-  });
+  cli.parse();
 }
