@@ -14,10 +14,9 @@ export class Site {
   }
 
   async build(): Promise<void> {
-    const postFiles = this.config.postFiles ??
-      await collectPostFiles(this.config);
+    const postFiles = await this.collectPostFiles();
     const posts = await Promise.all(
-      postFiles.map((file) => this.createPost(file)),
+      postFiles.map((file) => this.buildPost(file)),
     );
     for (const post of posts) {
       await this.writePost(post);
@@ -25,7 +24,15 @@ export class Site {
     }
   }
 
-  private async createPost(postFile: string): Promise<Post> {
+  private async collectPostFiles(): Promise<string[]> {
+    if (this.config.postFiles && this.config.postFiles.length > 0) {
+      return this.config.postFiles;
+    }
+    const postFiles = await collectPostFiles(this.config);
+    return postFiles;
+  }
+
+  private async buildPost(postFile: string): Promise<Post> {
     const src = await Deno.readTextFile(postFile);
     const { attributes, body } = frontMatter(src);
     const defaultTitle = path.basename(postFile);
