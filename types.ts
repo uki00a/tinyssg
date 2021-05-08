@@ -19,6 +19,7 @@ export interface Post {
   attributes: PostAttributes;
   body: string;
   path: string;
+  createdAt?: Date;
 }
 
 export interface DidBuildPostContext {
