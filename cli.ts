@@ -2,6 +2,7 @@ import { build, Config } from "./mod.ts";
 import { readConfig } from "./fs.ts";
 import { cac } from "./deps/cli.ts";
 import { path } from "./deps/main.ts";
+import { createLayoutPlugin } from "./plugins.ts";
 
 const cli = cac("tinyssg");
 
@@ -17,12 +18,17 @@ async function buildCommand(files: string[]): Promise<void> {
     postsDir: path.join(rootDir, "posts"),
     distDir: path.join(rootDir, "dist"),
     baseURL: "http://localhost:4507",
+    plugins: [],
     logger: console,
   };
   const finalConfig = {
     ...defaultConfig,
     ...config,
   };
+
+  if (finalConfig.plugins.length === 0) {
+    finalConfig.plugins.push(await createLayoutPlugin(finalConfig));
+  }
 
   if (files.length > 1) {
     finalConfig.postFiles = files.map((x) => path.resolve(x));

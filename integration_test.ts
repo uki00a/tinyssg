@@ -1,6 +1,6 @@
 import { rootDir, testdataDir } from "./test_util.ts";
-import { ensureDir, exists, path } from "./deps/main.ts";
-import { assert, emptyDir, readAll } from "./deps/dev.ts";
+import { ensureDir, path } from "./deps/main.ts";
+import { assertStringIncludes, emptyDir, readAll } from "./deps/dev.ts";
 import simpleConfig from "./testdata/simple/tinyssg.config.ts";
 
 Deno.test("tinyssg generate", async () => {
@@ -25,15 +25,18 @@ Deno.test("tinyssg generate", async () => {
     assert(status.success, decoder.decode(errorOutput));
 
     for (
-      const file of [
-        "index.html",
-        "2021/01/03.html",
-        "2020/12/28.html",
+      const [file, body] of [
+        ["index.html", "index"],
+        ["2021/01/03.html", "sample2"],
+        ["2020/12/28.html", "sample1"],
       ]
     ) {
-      assert(
-        await exists(path.join(simpleConfig.distDir, file)),
-        `${file} should be created`,
+      const actual = await Deno.readTextFile(
+        path.join(simpleConfig.distDir, file),
+      );
+      assertStringIncludes(
+        actual,
+        body,
       );
     }
   } finally {
