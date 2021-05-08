@@ -1,4 +1,4 @@
-import { exists, path } from "./deps.ts";
+import { exists, path } from "./deps/main.ts";
 import type { Config } from "./types.ts";
 
 export async function readConfig(dir: string): Promise<Partial<Config>> {
