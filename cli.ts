@@ -1,8 +1,5 @@
-import { build, Config } from "./mod.ts";
-import { readConfig } from "./fs.ts";
+import { build } from "./mod.ts";
 import { cac } from "./deps/cli.ts";
-import { path } from "./deps/main.ts";
-import { createLayoutPlugin } from "./plugins.ts";
 
 const cli = cac("tinyssg");
 
