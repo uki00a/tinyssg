@@ -1,4 +1,7 @@
 export interface Config {
+  favicon?: string;
+  author?: string;
+  image?: string;
   postsDir: string;
   distDir: string;
   templatePath?: string;

@@ -15,6 +15,9 @@ async function buildCommand(files: string[]): Promise<void> {
   const rootDir = Deno.cwd();
   const config = await readConfig(rootDir);
   const defaultConfig: Config = {
+    author: "",
+    image: "",
+    favicon: "",
     postsDir: path.join(rootDir, "posts"),
     distDir: path.join(rootDir, "dist"),
     baseURL: "http://localhost:4507",

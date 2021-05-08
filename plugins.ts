@@ -11,16 +11,17 @@ const defaultTemplate = `<html>
     <meta property="og:title" content="<%= title %>" />
     <meta property="og:description" content="<%= description %>" />
     <meta property="og:type" content="<%= type %>" />
-    <!-- FIXME! -->
-    <!--
-    <meta property="og:image" content="https://raw.githubusercontent.com/uki00a/blog/master/src/assets/avatar.png" />
-    -->
+    <% if (image) { %>
+    <meta property="og:image" content="<%= image %>" />
+    <% } %>
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@uki00a" />
-    <meta name="twitter:creator" content="@uki00a" />
-    <!--
+    <% if (author) { %>
+    <meta name="twitter:site" content="@<%= author %>" />
+    <meta name="twitter:creator" content="@<%= author %>" />
+    <% } %>
+    <% if (favicon) { %>
     <link rel="icon" href="https://raw.githubusercontent.com/uki00a/blog/master/src/assets/favicon.ico"></link>
-    -->
+    <% } %>
   </head>
   <body>
   </body>
@@ -32,10 +33,14 @@ export async function createLayoutPlugin(config: Config): Promise<Plugin> {
     : defaultTemplate;
 
   async function didBuildPost(ctx: DidBuildPostContext): Promise<void> {
-    const { post } = ctx;
+    const { post, config } = ctx;
     const { body, attributes } = post;
+    const { favicon, image, author } = config;
     post.body = await dejs.renderToString(template, {
       ...attributes,
+      favicon,
+      image,
+      author,
       body,
     });
   }
