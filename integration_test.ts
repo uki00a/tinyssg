@@ -1,9 +1,10 @@
 import { rootDir, testdataDir } from "./test_util.ts";
-import { ensureDir, exists, path } from "./deps/main.ts";
-import { assert, emptyDir, readAll } from "./deps/dev.ts";
+import { ensureDir, path } from "./deps/main.ts";
+import { htmlParser } from "./deps/html-parser.ts";
+import { assert, assertStringIncludes, emptyDir, readAll } from "./deps/dev.ts";
 import simpleConfig from "./testdata/simple/tinyssg.config.ts";
 
-Deno.test("tinyssg generate", async () => {
+Deno.test("tinyssg build", async () => {
   await ensureDir(simpleConfig.distDir);
   const cli = Deno.run({
     cwd: testdataDir("simple"),
@@ -25,15 +26,24 @@ Deno.test("tinyssg generate", async () => {
     assert(status.success, decoder.decode(errorOutput));
 
     for (
-      const file of [
-        "index.html",
-        "2021/01/03.html",
-        "2020/12/28.html",
+      const { file, body, title } of [
+        { file: "index.html", body: "index", title: "Index page" },
+        { file: "2021/01/03.html", body: "sample2", title: "sample2" },
+        { file: "2020/12/28.html", body: "sample1", title: "sample1" },
       ]
     ) {
-      assert(
-        await exists(path.join(simpleConfig.distDir, file)),
-        `${file} should be created`,
+      const actualHTML = await Deno.readTextFile(
+        path.join(simpleConfig.distDir, file),
+      );
+      assertStringIncludes(
+        actualHTML,
+        body,
+      );
+      // deno-lint-ignore no-explicit-any
+      const doc = (htmlParser as any).parse(actualHTML);
+      assertStringIncludes(
+        doc.querySelector("title").innerText,
+        title,
       );
     }
   } finally {
