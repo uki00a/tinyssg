@@ -1,9 +1,9 @@
 import { rootDir, testdataDir } from "./test_util.ts";
 import { ensureDir, path } from "./deps/main.ts";
-import { assertStringIncludes, emptyDir, readAll } from "./deps/dev.ts";
+import { assert, assertStringIncludes, emptyDir, readAll } from "./deps/dev.ts";
 import simpleConfig from "./testdata/simple/tinyssg.config.ts";
 
-Deno.test("tinyssg generate", async () => {
+Deno.test("tinyssg build", async () => {
   await ensureDir(simpleConfig.distDir);
   const cli = Deno.run({
     cwd: testdataDir("simple"),
