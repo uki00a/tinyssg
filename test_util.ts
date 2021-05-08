@@ -1,4 +1,4 @@
-import { path } from "./deps.ts";
+import { path } from "./deps/main.ts";
 
 export function rootDir(p = "/"): string {
   const rootDir = path.dirname(path.fromFileUrl(import.meta.url));

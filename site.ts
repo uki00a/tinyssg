@@ -1,4 +1,4 @@
-import { dejs, ensureDir, frontMatter, marked, path } from "./deps.ts";
+import { dejs, ensureDir, frontMatter, marked, path } from "./deps/main.ts";
 import type { Config, Page, Post } from "./types.ts";
 export type { Config, Logger } from "./types.ts";
 import { collectPostFiles, replaceExtname } from "./fs.ts";

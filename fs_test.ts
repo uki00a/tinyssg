@@ -1,7 +1,7 @@
 import { collectPostFiles, replaceExtname } from "./fs.ts";
 import type { Config } from "./types.ts";
 import { testdataDir } from "./test_util.ts";
-import { assertEquals } from "./test_deps.ts";
+import { assertEquals } from "./deps/dev.ts";
 
 Deno.test("collectPostFiles", async () => {
   const config = {

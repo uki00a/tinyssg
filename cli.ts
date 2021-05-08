@@ -1,6 +1,6 @@
 import { build, Config } from "./mod.ts";
 import { readConfig } from "./fs.ts";
-import { path } from "./deps.ts";
+import { path } from "./deps/main.ts";
 
 async function main() {
   const rootDir = Deno.cwd();

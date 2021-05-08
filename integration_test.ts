@@ -1,6 +1,6 @@
 import { rootDir, testdataDir } from "./test_util.ts";
-import { ensureDir, exists, path } from "./deps.ts";
-import { assert, emptyDir, readAll } from "./test_deps.ts";
+import { ensureDir, exists, path } from "./deps/main.ts";
+import { assert, emptyDir, readAll } from "./deps/dev.ts";
 import simpleConfig from "./testdata/simple/tinyssg.config.ts";
 
 Deno.test("tinyssg generate", async () => {
