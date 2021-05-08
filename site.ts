@@ -28,7 +28,6 @@ export class Site {
   private async createPost(postFile: string): Promise<Post> {
     const src = await Deno.readTextFile(postFile);
     const { attributes, body } = frontMatter(src);
-    const bodyHTML = marked(body);
     const defaultTitle = path.basename(postFile);
     const post: Post = {
       body: marked(body),
