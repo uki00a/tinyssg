@@ -5,6 +5,12 @@ import { createLayoutPlugin } from "./plugins.ts";
 import { readConfig } from "./fs.ts";
 
 export type { Config };
+export type {
+  DidBuildPostContext,
+  Plugin,
+  Post,
+  PostAttributes,
+} from "./typtes.ts";
 
 async function buildConfig(
   config: Partial<Config> = {},
