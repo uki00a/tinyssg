@@ -1,6 +1,6 @@
 ---
 id: 1
-title: index
+title: Index page
 summary: index
 publishedAt: 2020/12/28
 ---

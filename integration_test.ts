@@ -1,5 +1,6 @@
 import { rootDir, testdataDir } from "./test_util.ts";
 import { ensureDir, path } from "./deps/main.ts";
+import { htmlParser } from "./deps/html-parser.ts";
 import { assert, assertStringIncludes, emptyDir, readAll } from "./deps/dev.ts";
 import simpleConfig from "./testdata/simple/tinyssg.config.ts";
 
@@ -25,18 +26,24 @@ Deno.test("tinyssg build", async () => {
     assert(status.success, decoder.decode(errorOutput));
 
     for (
-      const [file, body] of [
-        ["index.html", "index"],
-        ["2021/01/03.html", "sample2"],
-        ["2020/12/28.html", "sample1"],
+      const { file, body, title } of [
+        { file: "index.html", body: "index", title: "Index page" },
+        { file: "2021/01/03.html", body: "sample2", title: "sample2" },
+        { file: "2020/12/28.html", body: "sample1", title: "sample1" },
       ]
     ) {
-      const actual = await Deno.readTextFile(
+      const actualHTML = await Deno.readTextFile(
         path.join(simpleConfig.distDir, file),
       );
       assertStringIncludes(
-        actual,
+        actualHTML,
         body,
+      );
+      // deno-lint-ignore no-explicit-any
+      const doc = (htmlParser as any).parse(actualHTML);
+      assertStringIncludes(
+        doc.querySelector("title").innerText,
+        title,
       );
     }
   } finally {
