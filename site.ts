@@ -34,6 +34,7 @@ export class Site {
 
   private async buildPost(postFile: string): Promise<Post> {
     const src = await Deno.readTextFile(postFile);
+    const stat = await Deno.lstat(postFile);
     const { attributes, body } = frontMatter(src);
     const defaultTitle = path.basename(postFile);
     const post: Post = {
@@ -45,6 +46,7 @@ export class Site {
         image: "",
         ...(attributes as Partial<PostAttributes>),
       },
+      createdAt: stat.birthtime ?? undefined,
       path: replaceExtname(
         path.relative(this.config.postsDir, postFile),
         ".html",
