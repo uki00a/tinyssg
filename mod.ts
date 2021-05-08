@@ -26,9 +26,10 @@ async function buildConfig(
     ...config,
   };
 
-  if (finalConfig.plugins.length === 0) {
-    finalConfig.plugins.push(await createLayoutPlugin(finalConfig));
-  }
+  finalConfig.plugins = [
+    await createLayoutPlugin(finalConfig),
+    ...finalConfig.plugins,
+  ];
 
   if (finalConfig.postFiles && finalConfig.postFiles.length > 1) {
     finalConfig.postFiles = finalConfig.postFiles.map((x) => path.resolve(x));
