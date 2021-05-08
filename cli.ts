@@ -12,32 +12,7 @@ cli.command("build [...files]", "Build files").action((files: string[]) =>
 );
 
 async function buildCommand(files: string[]): Promise<void> {
-  const rootDir = Deno.cwd();
-  const config = await readConfig(rootDir);
-  const defaultConfig: Config = {
-    author: "",
-    image: "",
-    favicon: "",
-    postsDir: path.join(rootDir, "posts"),
-    distDir: path.join(rootDir, "dist"),
-    baseURL: "http://localhost:4507",
-    plugins: [],
-    logger: console,
-  };
-  const finalConfig = {
-    ...defaultConfig,
-    ...config,
-  };
-
-  if (finalConfig.plugins.length === 0) {
-    finalConfig.plugins.push(await createLayoutPlugin(finalConfig));
-  }
-
-  if (files.length > 1) {
-    finalConfig.postFiles = files.map((x) => path.resolve(x));
-  }
-
-  await build(finalConfig);
+  await build({ postFiles: files });
 }
 
 if (import.meta.main) {
