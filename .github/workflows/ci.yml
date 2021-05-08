@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: "1.9.2"
+      - name: Run lint
+        run: |
+          deno fmt --check --ignore=./testdata
+          deno lint --unstable --ignore=./testdata
+      - name: Run tests
+        run: |
+          deno test --allow-read --allow-write --allow-run
