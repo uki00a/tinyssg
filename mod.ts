@@ -10,7 +10,7 @@ export type {
   Plugin,
   Post,
   PostAttributes,
-} from "./typtes.ts";
+} from "./types.ts";
 
 async function buildConfig(
   config: Partial<Config> = {},
